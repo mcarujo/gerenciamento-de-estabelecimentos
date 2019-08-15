@@ -1,0 +1,5 @@
+venv
+db
+migrations
+models/__pycache__
+connectors/__pycache__
