@@ -1,0 +1,27 @@
+version: '3.1'
+
+services:
+
+  database:
+    image: mysql:5.6
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: flask
+      MYSQL_DATABASE: flask
+
+  back:
+    image: debian:9-slim
+    restart: always
+    ports:
+      - 3000:3000
+    volumes:
+      - $PWD:/app/
+    command: tail -f /dev/null
+
+  # front:
+  #   image: debian:9-slim
+  #   restart: always
+  #   ports:
+  #     - 5000:3000
+

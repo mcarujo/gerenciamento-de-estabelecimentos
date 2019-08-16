@@ -1,6 +1,7 @@
 from flask import render_template, request, redirect, session, flash, url_for, Response
 import json
 from models import Estabelecimento
+from validations import RegistrationForm
 from connectors import EstabelecimentoConn
 from app import db, app
 
@@ -59,32 +60,47 @@ def mostrar(id):
 
 @app.route('/estabelecimento', methods=['POST', ])
 def criar():
-    estabelecimento_conn = EstabelecimentoConn(db)
-    estabelecimento = Estabelecimento(request.form['nome'],
-                                      request.form['cnpj'],
-                                      request.form['bairro'],
-                                      request.form['cidade'],
-                                      request.form['telefone'])
-    estabelecimento.id = None
-    estabelecimento_conn.salvar(estabelecimento)
-    return Response(json.dumps(estabelecimento.__dict__), status=200, mimetype='application/json')
+    form = RegistrationForm(request.form)
+    if request.method == 'POST' and form.validate():
+        estabelecimento_conn = EstabelecimentoConn(db)
+        estabelecimento = Estabelecimento(request.form['nome'],
+                                        request.form['cnpj'],
+                                        request.form['bairro'],
+                                        request.form['cidade'],
+                                        request.form['telefone'])
+        estabelecimento.id = None
+        estabelecimento_conn.salvar(estabelecimento)
+        return_data = json.dumps(estabelecimento.__dict__)
+    else: 
+        return_data = json.dumps(False)
+    return Response(return_data, status=200, mimetype='application/json')
+
 
 
 @app.route('/estabelecimento', methods=['PUT', ])
 def atualizar():
-    estabelecimento_conn = EstabelecimentoConn(db)
-    estabelecimento = Estabelecimento(request.form['nome'],
-                                      request.form['cnpj'],
-                                      request.form['bairro'],
-                                      request.form['cidade'],
-                                      request.form['telefone'])
-    estabelecimento.id = request.form['id']
-    estabelecimento_conn.salvar(estabelecimento)
-    return Response(json.dumps(estabelecimento.__dict__), status=200, mimetype='application/json')
+    form = RegistrationForm(request.form)
+    if request.method == 'PUT' and form.validate() and 'id' in request.form:
+        estabelecimento_conn = EstabelecimentoConn(db)
+        estabelecimento = Estabelecimento(request.form['nome'],
+                                        request.form['cnpj'],
+                                        request.form['bairro'],
+                                        request.form['cidade'],
+                                        request.form['telefone'])
+        estabelecimento.id = request.form['id']
+        estabelecimento_conn.salvar(estabelecimento)
+        return_data = json.dumps(estabelecimento.__dict__)
+    else: 
+        return_data = json.dumps(False)
+    return Response(return_data, status=200, mimetype='application/json')
 
 
 @app.route('/estabelecimento/<int:id>', methods=['DELETE', ])
 def deletar(id):
-    estabelecimentoo_conn = EstabelecimentoConn(db)
-    estabelecimentoo_conn.deletar(id)
-    return Response(json.dumps(id), status=200, mimetype='application/json')
+    if not id:
+        return_data = False 
+    else:
+        estabelecimentoo_conn = EstabelecimentoConn(db)
+        estabelecimentoo_conn.deletar(id)
+        return_data = json.dumps(id) 
+    return Response(return_data, status=200, mimetype='application/json')

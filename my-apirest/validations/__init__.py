@@ -1,0 +1,1 @@
+from validations.form_estabelecimento import RegistrationForm
