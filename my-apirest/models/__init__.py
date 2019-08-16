@@ -1,1 +1,1 @@
-from models.jogo import Estabelecimento
+from models.estabelecimento import Estabelecimento

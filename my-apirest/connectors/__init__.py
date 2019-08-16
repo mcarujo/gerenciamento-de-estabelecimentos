@@ -1,2 +1,1 @@
-from connectors.jogo_conn import JogoConn
-from connectors.usuario_conn import UsuarioConn
+from connectors.estabelecimento_conn import EstabelecimentoConn
