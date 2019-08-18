@@ -33,7 +33,7 @@ def autenticar(f):
 
 @app.route('/')
 def home():
-    return Response(jsonify("Apirest funcionando!"), status=200, mimetype='application/json')
+    return jsonify("Apirest funcionando!"), 200
 
 
 @app.route('/login', methods=['POST'])
@@ -50,7 +50,7 @@ def login():
             return_data = jsonify(False)
     else:
         return_data = jsonify(False)
-    return Response(return_data, status=200, mimetype='application/json')
+    return return_data, 200
 
 
 @app.route('/logout', methods=['POST', ])
@@ -66,7 +66,7 @@ def logout():
             return_data = jsonify(False)
     else:
         return_data = jsonify(False)
-    return Response(return_data, status=200, mimetype='application/json')
+    return return_data, 200
 
 
 @app.route('/estabelecimento', methods=['GET', ])
@@ -74,7 +74,7 @@ def logout():
 def listar():
     estabelecimento_conn = EstabelecimentoConn(db)
     estabelecimentos = estabelecimento_conn.listar()
-    return Response(jsonify(estabelecimentos), status=200, mimetype='application/json')
+    return jsonify(estabelecimentos), 200
 
 
 @app.route('/estabelecimento/<int:id>', methods=['GET', ])
@@ -82,7 +82,7 @@ def listar():
 def mostrar(id):
     estabelecimento_conn = EstabelecimentoConn(db)
     estabelecimento = estabelecimento_conn.busca_por_id(id)
-    return Response(jsonify(estabelecimento), status=200, mimetype='application/json')
+    return jsonify(estabelecimento), 200
 
 
 @app.route('/estabelecimento', methods=['POST', ])
@@ -101,7 +101,7 @@ def criar():
         return_data = jsonify(estabelecimento.__dict__)
     else:
         return_data = jsonify(False)
-    return Response(return_data, status=200, mimetype='application/json')
+    return return_data, 200
 
 
 @app.route('/estabelecimento', methods=['PUT', ])
@@ -120,7 +120,7 @@ def atualizar():
         return_data = jsonify(estabelecimento.__dict__)
     else:
         return_data = jsonify(False)
-    return Response(return_data, status=200, mimetype='application/json')
+    return return_data, 200
 
 
 @app.route('/estabelecimento/<int:id>', methods=['DELETE', ])
@@ -132,7 +132,7 @@ def deletar(id):
         estabelecimentoo_conn = EstabelecimentoConn(db)
         estabelecimentoo_conn.deletar(id)
         return_data = jsonify(id)
-    return Response(return_data, status=200, mimetype='application/json')
+    return return_data, 200
 
 
 def randomString():
