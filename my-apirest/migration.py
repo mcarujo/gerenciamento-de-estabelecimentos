@@ -29,14 +29,12 @@ class User(db.Model):
     login = db.Column(db.String(15))
     senha = db.Column(db.String(18))
     token = db.Column(db.String(64))
-    validade = db.Column(db.String(64))
 
     def seed(cls, fake):
         user = User(
             name='flask',
             password='flask',
             token='',
-            validade=''
         )
         user.save()
 

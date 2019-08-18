@@ -7,14 +7,14 @@ class UserConn:
 
     def buscar_por_login_senha(self, login, senha):
         cursor = self.__db.connection.cursor()
-        sql = 'SELECT id, login, senha, token, validade from user where login = %s and senha = %s'
+        sql = 'SELECT id, login, senha, token from user where login = %s and senha = %s'
         cursor.execute(sql, (login, senha,))
         tupla = cursor.fetchone()
         return (cria_user_com_tupla(tupla) if tupla else False)
 
     def busca_por_token(self, token):
         cursor = self.__db.connection.cursor()
-        sql = 'SELECT id, login, senha, token, validade from user where token = %s'
+        sql = 'SELECT id, login, senha, token from user where token = %s'
         cursor.execute(sql, (token,))
         tupla = cursor.fetchone()
         return (cria_user_com_tupla(tupla) if tupla else False)
@@ -22,18 +22,16 @@ class UserConn:
     def salvar(self, user):  # ou atualizar, depende se passar o id
         cursor = self.__db.connection.cursor()
         if (user['id']):
-            sql = 'UPDATE user SET login=%s, senha=%s, token=%s, validade=%s where id = %s'
+            sql = 'UPDATE user SET login=%s, senha=%s, token=%s where id = %s'
             cursor.execute(sql, (user['login'],
                                  user['senha'],
                                  user['token'],
-                                 user['validade'],
                                  user['id']))
         else:
-            sql = 'INSERT into user (login, senha, token, validade) values (%s, %s, %s, %s, %s)'
+            sql = 'INSERT into user (login, senha, token) values (%s, %s, %s, %s, %s)'
             cursor.execute(sql, (user['login'],
                                  user['senha'],
                                  user['token'],
-                                 user['validade'],
                                  user['id']))
             user.id = cursor.lastrowid
         self.__db.connection.commit()
@@ -46,7 +44,7 @@ class UserConn:
 
 
 def cria_user_com_tupla(tupla):
-    aux = User(tupla[1], tupla[2], tupla[3], tupla[4])
+    aux = User(tupla[1], tupla[2], tupla[3])
     aux.id = tupla[0]
     return aux.__dict__
 
