@@ -23,18 +23,36 @@ export class Table extends Component {
               {headers.map(header => {
                 return <th>{header}</th>;
               })}
+              <th colSpan={2} />
             </tr>
           </thead>
           <tbody>
-            {lines.map(line => {
-              return (
-                <tr>
-                  {line.map(field => {
-                    return <td>{field}</td>;
-                  })}
-                </tr>
-              );
-            })}
+            {lines.length == 0 ? (
+              <tr>
+                <td
+                  style={{ textAlign: "center" }}
+                  colSpan={headers.length + 2}
+                >
+                  Sem registros
+                </td>
+              </tr>
+            ) : (
+              lines.map(line => {
+                return (
+                  <tr>
+                    {line.map(field => {
+                      return <td>{field}</td>;
+                    })}
+                    <td>
+                      <a href="http://www.google.com.br"> Editar </a>
+                    </td>
+                    <td>
+                      <a href="http://www.google.com.br"> Excluir </a>
+                    </td>{" "}
+                  </tr>
+                );
+              })
+            )}
           </tbody>
         </table>
       </div>
