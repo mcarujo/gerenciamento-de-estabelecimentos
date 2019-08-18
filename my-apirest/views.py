@@ -1,47 +1,63 @@
 from flask import render_template, request, redirect, session, flash, url_for, Response
 import json
-from models import Estabelecimento
+import random
+import string
+from models import Estabelecimento, User
 from validations import RegistrationForm
-from connectors import EstabelecimentoConn
+from connectors import EstabelecimentoConn, UserConn
 from app import db, app
 
 
 @app.route('/')
 def home():
-    return Response(json.dumps("apirest funcionando!"), status=200, mimetype='application/json')
+    return Response(json.dumps("Apirest funcionando!"), status=200, mimetype='application/json')
 
 
-# @app.route('/login')
-# def login():
-#     next = request.args.get('next')
-#     return render_template('login.html', next=next)
+@app.route('/login', methods=['POST'])
+def login():
+    if 'login' in request.form and 'senha' in request.form:
+        user_conn = UserConn(db)
+        user = user_conn.buscar_por_login_senha(
+            request.form['login'], request.form['senha'])
+        if user:
+            user['token'] = randomString()
+            user_conn.salvar(user)
+            return_data = json.dumps({'token': user['token']})
+        else:
+            return_data = json.dumps(False)
+    else:
+        return_data = json.dumps(False)
+    return Response(return_data, status=200, mimetype='application/json')
 
 
-# @app.route('/logout')
-# def logout():
-#     session['usuer'] = None
-#     session['usuername'] = None
-#     session.clear()
-#     flash('No user logged')
-#     return redirect(url_for('index'))
+@app.route('/logout', methods=['POST', ])
+def logout():
+    if 'token' in request.form:
+        user_conn = UserConn(db)
+        user = user_conn.busca_por_token(request.form['token'])
+        if user:
+            user['token'] = ""
+            user_conn.salvar(user)
+            return_data = json.dumps(True)
+        else:
+            return_data = json.dumps(False)
+    else:
+        return_data = json.dumps(False)
+    return Response(return_data, status=200, mimetype='application/json')
 
 
-# @app.route('/autenticar', methods=['POST', ])
-# def autenticar():
-
-#     usuario_conn = UsuarioConn(db)
-#     usuario = usuario_conn.buscar_por_login_senha(
-#         request.form['usuario'], request.form['senha'])
-#     if usuario:
-#         session['user'] = usuario.id
-#         session['username'] = usuario.nome
-#         flash(usuario.nome + ' logou com sucesso!')
-#         mext = request.form['next']
-#         return redirect(mext)
-
-#     else:
-#         flash('Não logado, tente de novo!')
-#         return redirect(url_for('login'))
+@app.route('/autenticar', methods=['POST', ])
+def autenticar():
+    if 'token' in request.form:
+        user_conn = UserConn(db)
+        user = user_conn.busca_por_token(request.form['token'])
+        if user:
+            return_data = json.dumps(True)
+        else:
+            return_data = json.dumps(False)
+    else:
+        return_data = json.dumps(False)
+    return Response(return_data, status=200, mimetype='application/json')
 
 
 @app.route('/estabelecimento', methods=['GET', ])
@@ -64,17 +80,16 @@ def criar():
     if request.method == 'POST' and form.validate():
         estabelecimento_conn = EstabelecimentoConn(db)
         estabelecimento = Estabelecimento(request.form['nome'],
-                                        request.form['cnpj'],
-                                        request.form['bairro'],
-                                        request.form['cidade'],
-                                        request.form['telefone'])
+                                          request.form['cnpj'],
+                                          request.form['bairro'],
+                                          request.form['cidade'],
+                                          request.form['telefone'])
         estabelecimento.id = None
         estabelecimento_conn.salvar(estabelecimento)
         return_data = json.dumps(estabelecimento.__dict__)
-    else: 
+    else:
         return_data = json.dumps(False)
     return Response(return_data, status=200, mimetype='application/json')
-
 
 
 @app.route('/estabelecimento', methods=['PUT', ])
@@ -83,14 +98,14 @@ def atualizar():
     if request.method == 'PUT' and form.validate() and 'id' in request.form:
         estabelecimento_conn = EstabelecimentoConn(db)
         estabelecimento = Estabelecimento(request.form['nome'],
-                                        request.form['cnpj'],
-                                        request.form['bairro'],
-                                        request.form['cidade'],
-                                        request.form['telefone'])
+                                          request.form['cnpj'],
+                                          request.form['bairro'],
+                                          request.form['cidade'],
+                                          request.form['telefone'])
         estabelecimento.id = request.form['id']
         estabelecimento_conn.salvar(estabelecimento)
         return_data = json.dumps(estabelecimento.__dict__)
-    else: 
+    else:
         return_data = json.dumps(False)
     return Response(return_data, status=200, mimetype='application/json')
 
@@ -98,9 +113,13 @@ def atualizar():
 @app.route('/estabelecimento/<int:id>', methods=['DELETE', ])
 def deletar(id):
     if not id:
-        return_data = False 
+        return_data = False
     else:
         estabelecimentoo_conn = EstabelecimentoConn(db)
         estabelecimentoo_conn.deletar(id)
-        return_data = json.dumps(id) 
+        return_data = json.dumps(id)
     return Response(return_data, status=200, mimetype='application/json')
+
+
+def randomString():
+    return ''.join(random.choice(string.ascii_letters) for i in range(16))

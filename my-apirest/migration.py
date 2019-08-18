@@ -24,5 +24,22 @@ class Estabelecimento(db.Model):
     telefone = db.Column(db.String(13))
 
 
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    login = db.Column(db.String(15))
+    senha = db.Column(db.String(18))
+    token = db.Column(db.String(64))
+    validade = db.Column(db.String(64))
+
+    def seed(cls, fake):
+        user = User(
+            name='flask',
+            password='flask',
+            token='',
+            validade=''
+        )
+        user.save()
+
+
 if __name__ == '__main__':
     manager.run()

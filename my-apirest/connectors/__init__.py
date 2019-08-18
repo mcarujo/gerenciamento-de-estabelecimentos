@@ -1,1 +1,2 @@
 from connectors.estabelecimento_conn import EstabelecimentoConn
+from connectors.user_conn import UserConn
