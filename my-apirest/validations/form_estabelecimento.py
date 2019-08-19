@@ -1,4 +1,6 @@
 from wtforms import Form, StringField, validators
+import wtforms_json
+wtforms_json.init()
 
 
 class RegistrationForm(Form):

@@ -22,7 +22,7 @@ def autenticar(f):
 
         try:
             user_conn = UserConn(db)
-            user = user_conn.busca_por_token(request.form['token'])
+            user = user_conn.busca_por_token(request.headers['token'])
             if not user:
                 return jsonify({'mensagem': 'Token está errado!'}), 401
         except:
@@ -38,10 +38,10 @@ def home():
 
 @app.route('/login', methods=['POST'])
 def login():
-    if 'login' in request.form and 'senha' in request.form:
+    if 'login' in request.json and 'senha' in request.json:
         user_conn = UserConn(db)
         user = user_conn.buscar_por_login_senha(
-            request.form['login'], request.form['senha'])
+            request.json['login'], request.json['senha'])
         if user:
             user['token'] = randomString()
             user_conn.salvar(user)
@@ -49,15 +49,15 @@ def login():
         else:
             return_data = jsonify(False)
     else:
-        return_data = jsonify(False)
+        return_data = jsonify(request.json)
     return return_data, 200
 
 
 @app.route('/logout', methods=['POST', ])
 def logout():
-    if 'token' in request.form:
+    if 'token' in request.json:
         user_conn = UserConn(db)
-        user = user_conn.busca_por_token(request.form['token'])
+        user = user_conn.busca_por_token(request.json['token'])
         if user:
             user['token'] = ""
             user_conn.salvar(user)
@@ -88,14 +88,14 @@ def mostrar(id):
 @app.route('/estabelecimento', methods=['POST', ])
 @autenticar
 def criar():
-    form = RegistrationForm(request.form)
+    form = RegistrationForm.from_json(request.json)
     if request.method == 'POST' and form.validate():
         estabelecimento_conn = EstabelecimentoConn(db)
-        estabelecimento = Estabelecimento(request.form['nome'],
-                                          request.form['cnpj'],
-                                          request.form['bairro'],
-                                          request.form['cidade'],
-                                          request.form['telefone'])
+        estabelecimento = Estabelecimento(request.json['nome'],
+                                          request.json['cnpj'],
+                                          request.json['bairro'],
+                                          request.json['cidade'],
+                                          request.json['telefone'])
         estabelecimento.id = None
         estabelecimento_conn.salvar(estabelecimento)
         return_data = jsonify(estabelecimento.__dict__)
@@ -107,15 +107,15 @@ def criar():
 @app.route('/estabelecimento', methods=['PUT', ])
 @autenticar
 def atualizar():
-    form = RegistrationForm(request.form)
-    if request.method == 'PUT' and form.validate() and 'id' in request.form:
+    form = RegistrationForm.from_json(request.json)
+    if request.method == 'PUT' and form.validate() and 'id' in request.json:
         estabelecimento_conn = EstabelecimentoConn(db)
-        estabelecimento = Estabelecimento(request.form['nome'],
-                                          request.form['cnpj'],
-                                          request.form['bairro'],
-                                          request.form['cidade'],
-                                          request.form['telefone'])
-        estabelecimento.id = request.form['id']
+        estabelecimento = Estabelecimento(request.json['nome'],
+                                          request.json['cnpj'],
+                                          request.json['bairro'],
+                                          request.json['cidade'],
+                                          request.json['telefone'])
+        estabelecimento.id = request.json['id']
         estabelecimento_conn.salvar(estabelecimento)
         return_data = jsonify(estabelecimento.__dict__)
     else:
