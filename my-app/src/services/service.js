@@ -3,17 +3,19 @@ import PropTypes from "prop-types";
 import Cookies from "universal-cookie";
 const cookies = new Cookies();
 
-export const URL = `http://back-end:3001`;
+export const URL = `http://localhost:81`;
 
 const request = props => {
   return new Promise((resolve, reject) => {
-    axios.defaults.headers.post["Content-Type"] = "application/json";
-    axios.defaults.headers.post["Access-Control-Allow-Origin"] = "*";
     let res;
     const URI = `${URL}${props.uri}`;
     const headers = {
       headers: {
-        token: cookies.get("token")
+        token: cookies.get("token"),
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Credentials": true,
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Max-Age": 86400
       }
     };
     if (props.method == "GET") {
@@ -79,6 +81,7 @@ const request = props => {
           } else {
             cookies.set("token", response.data.token, { path: "/" });
             resolve(true);
+            goToHome();
           }
         } else {
           resolve(false);
@@ -94,11 +97,16 @@ const request = props => {
   });
 };
 
-const errorActions = () => {
+function errorActions() {
   window.location.href = `/login`;
-};
+}
+
 function goToLogin() {
   window.location.href = `/login`;
+}
+
+function goToHome() {
+  window.location.href = `/`;
 }
 
 request.propTypes = {

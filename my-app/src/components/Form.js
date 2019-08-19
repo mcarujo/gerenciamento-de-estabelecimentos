@@ -19,40 +19,38 @@ class Form extends Component {
     const { onClickButton, label } = this.props;
     const { title, inputs } = this.state;
     return (
-      <div className="content" id="content">
+      <div className="form" id="content">
         <h4 className="titleForm">{title}</h4>
         <div className="pure-form pure-form-aligned">
-          <form className="pure-form pure-form-aligned">
-            <div className="pure-control-group">
-              <label />
-              <div className="form-possition">
-                {inputs.map((input, key) => {
-                  const { nameInput, typeInput, valueInput } = input;
-                  return (
-                    <div className="pure-control-group">
-                      <label htmlFor={typeInput}>{nameInput}</label>
-                      <input
-                        type={typeInput}
-                        name={nameInput}
-                        value={valueInput}
-                        onChange={e => this.changeForm(key, e.target.value)}
-                      />
-                    </div>
-                  );
-                })}
-              </div>
-              <div className="button-possition">
-                <button
-                  className="pure-button pure-button-primary"
-                  onClick={event => {
-                    event.preventDefault();
-                    onClickButton(inputs);
-                  }}
-                >
-                  {label}
-                </button>
-              </div>
-            </div>
+          <form class="pure-form pure-form-aligned">
+            <fieldset>
+              {inputs.map((input, key) => {
+                const { nameInput, typeInput, valueInput } = input;
+                return (
+                  <div class="pure-control-group">
+                    <label htmlFor={typeInput}>{nameInput}</label>
+                    <input
+                      class="pure-input-1-3"
+                      type={typeInput}
+                      name={nameInput}
+                      value={valueInput}
+                      onChange={e => this.changeForm(key, e.target.value)}
+                    />
+                    <span class="margin-span">This is a required field.</span>
+                  </div>
+                );
+              })}
+            </fieldset>
+
+            <button
+              className="pure-button pure-button-primary margin-button"
+              onClick={event => {
+                event.preventDefault();
+                onClickButton(inputs);
+              }}
+            >
+              {label}
+            </button>
           </form>
         </div>
       </div>

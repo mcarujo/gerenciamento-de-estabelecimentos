@@ -1,4 +1,20 @@
 .titleForm {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   border-bottom: 2px solid grey;
+}
+
+.form {
+  padding: 5%;
+  padding-top: 1%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  justify-items: center;
+}
+.margin-span {
+  margin-left: 10px;
+}
+
+.margin-button {
+  margin-left: 15%;
 }

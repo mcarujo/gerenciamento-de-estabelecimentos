@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Form } from "../components";
+import request from "../services/service";
 
 export class FormGeneric extends Component {
   constructor() {
@@ -14,8 +15,24 @@ export class FormGeneric extends Component {
     };
   }
   onClickButton(dataForm) {
-    // What you should do with the form datas...
-    console.log(dataForm);
+    let response = request({
+      method: "POST",
+      uri: "/estabelecimento",
+      data: {
+        nome: dataForm[0].valueInput,
+        cnpj: dataForm[1].valueInput,
+        bairro: dataForm[2].valueInput,
+        cidade: dataForm[3].valueInput,
+        telefone: dataForm[4].valueInput
+      }
+    });
+    response.then(value => {
+      if (value) {
+        console.log("Adicionado");
+      } else {
+        console.log("Não adicionado");
+      }
+    });
   }
 
   render() {

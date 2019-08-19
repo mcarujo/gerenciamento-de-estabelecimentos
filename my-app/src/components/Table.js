@@ -4,18 +4,12 @@ import "./Table.scss";
 export class Table extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      title: this.props.title,
-      headers: this.props.headers,
-      lines: this.props.lines
-    };
   }
 
   render() {
-    const { title, headers, lines } = this.state;
-    console.log(this.state);
+    const { title, headers, lines } = this.props;
     return (
-      <div className="content" id="content">
+      <div className="table" id="content">
         <h4 className="titleTable">{title}</h4>
         <table className="pure-table pure-table-bordered">
           <thead>
@@ -44,10 +38,30 @@ export class Table extends Component {
                       return <td>{field}</td>;
                     })}
                     <td>
-                      <a href="http://www.google.com.br"> Editar </a>
+                      <a
+                        class="pure-button pure-button-primary"
+                        onClick={() => {
+                          console.log(
+                            `Linha de id: ${line[0]} foi clicada para editar.`
+                          );
+                        }}
+                      >
+                        {" "}
+                        Editar{" "}
+                      </a>
                     </td>
                     <td>
-                      <a href="http://www.google.com.br"> Excluir </a>
+                      <a
+                        class="pure-button button-error"
+                        onClick={() => {
+                          console.log(
+                            `Linha de id: ${line[0]} foi clicada para deletar.`
+                          );
+                        }}
+                      >
+                        {" "}
+                        Excluir{" "}
+                      </a>
                     </td>{" "}
                   </tr>
                 );

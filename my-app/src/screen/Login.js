@@ -14,8 +14,8 @@ export class Login extends Component {
   onClickButton(dataForm) {
     let response = request({
       method: "LOGIN",
-      uri: "/estabelecimento",
-      data: { login: dataForm.login, senha: dataForm.senha }
+      uri: "/login",
+      data: { login: dataForm[0].valueInput, senha: dataForm[1].valueInput }
     });
     response.then(value => {
       console.log(value);
