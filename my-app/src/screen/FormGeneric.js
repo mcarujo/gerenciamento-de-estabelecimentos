@@ -1,24 +1,33 @@
 import React, { Component } from "react";
 import { Form } from "../components";
 import request from "../services/service";
+import { browserHistory } from "react-router";
 
 export class FormGeneric extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    const edit = this.props.location.state;
     this.state = {
-      title: "Novo Estabelecimento",
-      nome: "",
-      cnpj: "",
-      bairro: "",
-      cidade: "",
-      telefone: ""
+      edit: edit ? true : false,
+      title: edit
+        ? `Editando Estabelecimento - ${edit.id}`
+        : "Novo Estabelecimento",
+      id: edit ? edit.id : "",
+      nome: edit ? edit.nome : "",
+      cnpj: edit ? edit.cnpj : "",
+      bairro: edit ? edit.bairro : "",
+      cidade: edit ? edit.cidade : "",
+      telefone: edit ? edit.telefone : ""
     };
+    this.onClickButton = this.onClickButton.bind(this);
   }
   onClickButton(dataForm) {
+    console.log("Editado ?", this.isEdit());
     let response = request({
-      method: "POST",
+      method: this.state.edit ? "PUT" : "POST",
       uri: "/estabelecimento",
       data: {
+        id: this.state.id,
         nome: dataForm[0].valueInput,
         cnpj: dataForm[1].valueInput,
         bairro: dataForm[2].valueInput,
@@ -28,9 +37,15 @@ export class FormGeneric extends Component {
     });
     response.then(value => {
       if (value) {
-        console.log("Adicionado");
+        this.setState({
+          nome: "",
+          cnpj: "",
+          bairro: "",
+          cidade: "",
+          telefone: ""
+        });
+        browserHistory.push("/table");
       } else {
-        console.log("Não adicionado");
       }
     });
   }
@@ -41,7 +56,6 @@ export class FormGeneric extends Component {
       <div>
         <Form
           title={title}
-          //["Nome", "CNPJ", "Bairro", "Cidade", "Telefone"]
           inputs={[
             {
               nameInput: "Nome",

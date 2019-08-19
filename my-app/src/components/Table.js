@@ -21,7 +21,7 @@ export class Table extends Component {
             </tr>
           </thead>
           <tbody>
-            {lines.length == 0 ? (
+            {lines.length === 0 ? (
               <tr>
                 <td
                   style={{ textAlign: "center" }}
@@ -41,9 +41,14 @@ export class Table extends Component {
                       <a
                         class="pure-button pure-button-primary"
                         onClick={() => {
-                          console.log(
-                            `Linha de id: ${line[0]} foi clicada para editar.`
-                          );
+                          this.props.onClickButtonEdit({
+                            id: line[0],
+                            nome: line[1],
+                            cnpj: line[2],
+                            bairro: line[3],
+                            cidade: line[4],
+                            telefone: line[5]
+                          });
                         }}
                       >
                         {" "}
@@ -54,9 +59,7 @@ export class Table extends Component {
                       <a
                         class="pure-button button-error"
                         onClick={() => {
-                          console.log(
-                            `Linha de id: ${line[0]} foi clicada para deletar.`
-                          );
+                          this.props.onClickButtonDelete(line[0]);
                         }}
                       >
                         {" "}

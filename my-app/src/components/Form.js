@@ -36,7 +36,6 @@ class Form extends Component {
                       value={valueInput}
                       onChange={e => this.changeForm(key, e.target.value)}
                     />
-                    <span class="margin-span">This is a required field.</span>
                   </div>
                 );
               })}

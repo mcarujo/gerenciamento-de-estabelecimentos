@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Table } from "../components";
+import { browserHistory } from "react-router";
 import request from "../services/service";
 
 export class TableGeneric extends Component {
@@ -12,6 +13,37 @@ export class TableGeneric extends Component {
     };
     this.loadData = this.loadData.bind(this);
   }
+
+  onClickButtonEdit(dataForm) {
+    browserHistory.push({
+      pathname: "/form",
+      state: {
+        edit: true,
+        id: dataForm.id,
+        nome: dataForm.nome,
+        cnpj: dataForm.cnpj,
+        bairro: dataForm.bairro,
+        cidade: dataForm.cidade,
+        telefone: dataForm.telefone
+      }
+    });
+  }
+
+  onClickButtonDelete(id) {
+    let response = request({
+      method: "DELETE",
+      uri: `/estabelecimento/${id}`,
+      data: null
+    });
+    response.then(value => {
+      if (value) {
+        this.loadData();
+      } else {
+        console.log("Erro")
+      }
+    });
+  }
+
   loadData() {
     let response = request({
       method: "GET",
@@ -36,11 +68,16 @@ export class TableGeneric extends Component {
     this.loadData();
   }
   render() {
-    const { title, headers, lines } = this.state;
-    console.log(this.state);
+    const { title, headers, lines, formEdit } = this.state;
     return (
       <div>
-        <Table title={title} headers={headers} lines={lines} />
+        <Table
+          title={title}
+          headers={headers}
+          lines={lines}
+          onClickButtonEdit={this.onClickButtonEdit}
+          onClickButtonDelete={this.onClickButtonDelete}
+        />
       </div>
     );
   }
