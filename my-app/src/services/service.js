@@ -78,6 +78,7 @@ const request = props => {
         if (response.status === 200) {
           if (response.data === false) {
             resolve(false);
+            goToLogin();
           } else {
             cookies.set("token", response.data.token, { path: "/" });
             resolve(true);
@@ -98,15 +99,15 @@ const request = props => {
 };
 
 function errorActions() {
-  // window.location.href = `/login`;
+  window.location.href = `/login`;
 }
 
 function goToLogin() {
-  // window.location.href = `/login`;
+  window.location.href = `/login`;
 }
 
 function goToHome() {
-  // window.location.href = `/`;
+  window.location.href = `/`;
 }
 
 request.propTypes = {
