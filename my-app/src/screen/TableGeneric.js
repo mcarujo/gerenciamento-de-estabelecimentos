@@ -12,6 +12,7 @@ export class TableGeneric extends Component {
       lines: []
     };
     this.loadData = this.loadData.bind(this);
+    this.onClickButtonDelete = this.onClickButtonDelete.bind(this);
   }
 
   onClickButtonEdit(dataForm) {
@@ -39,7 +40,7 @@ export class TableGeneric extends Component {
       if (value) {
         this.loadData();
       } else {
-        console.log("Erro")
+        console.log("Erro");
       }
     });
   }

@@ -12,6 +12,7 @@ export class FormGeneric extends Component {
       title: edit
         ? `Editando Estabelecimento - ${edit.id}`
         : "Novo Estabelecimento",
+      label: edit ? "Editar" : "Adicionar",
       id: edit ? edit.id : "",
       nome: edit ? edit.nome : "",
       cnpj: edit ? edit.cnpj : "",
@@ -22,7 +23,6 @@ export class FormGeneric extends Component {
     this.onClickButton = this.onClickButton.bind(this);
   }
   onClickButton(dataForm) {
-    console.log("Editado ?", this.isEdit());
     let response = request({
       method: this.state.edit ? "PUT" : "POST",
       uri: "/estabelecimento",
@@ -51,7 +51,7 @@ export class FormGeneric extends Component {
   }
 
   render() {
-    const { title, nome, cnpj, bairro, cidade, telefone } = this.state;
+    const { title, nome, cnpj, bairro, cidade, telefone, label } = this.state;
     return (
       <div>
         <Form
@@ -84,7 +84,7 @@ export class FormGeneric extends Component {
             }
           ]}
           onClickButton={this.onClickButton}
-          label={"Adicionar"}
+          label={label}
         />
       </div>
     );
