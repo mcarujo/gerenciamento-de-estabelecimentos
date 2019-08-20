@@ -28,11 +28,10 @@ class UserConn:
                                  user['token'],
                                  user['id']))
         else:
-            sql = 'INSERT into user (login, senha, token) values (%s, %s, %s, %s, %s)'
+            sql = 'INSERT into user (login, senha, token) values (%s, %s, %s)'
             cursor.execute(sql, (user['login'],
                                  user['senha'],
-                                 user['token'],
-                                 user['id']))
+                                 user['token']))
             user.id = cursor.lastrowid
         self.__db.connection.commit()
         return user

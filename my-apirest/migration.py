@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
 
+
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:flask@database/flask'
 db = SQLAlchemy(app)
@@ -29,14 +30,6 @@ class User(db.Model):
     login = db.Column(db.String(15))
     senha = db.Column(db.String(18))
     token = db.Column(db.String(64))
-
-    def seed(cls, fake):
-        user = User(
-            name='flask',
-            password='flask',
-            token='',
-        )
-        user.save()
 
 
 if __name__ == '__main__':
