@@ -51,15 +51,14 @@ export class Home extends Component {
               </a>
             </p>
             <p>
-              {" "}
               {"- "}
               <a href="https://github.com/mcarujo/gerenciamento-de-estabelecimentos/tree/front-end">
                 Front-end
               </a>{" "}
-              feito em <a hred="https://reactjs.org/">React JS</a> onde
+              feito em <a href="https://reactjs.org/">React JS</a> onde
               basicamente foi construída quatro telas: Home, Form, Table e
               Login. Estas estão no diretório
-              <a hred="https://github.com/mcarujo/gerenciamento-de-estabelecimentos/tree/front-end/my-app/src/screen">
+              <a href="https://github.com/mcarujo/gerenciamento-de-estabelecimentos/tree/front-end/my-app/src/screen">
                 screen
               </a>
               .
