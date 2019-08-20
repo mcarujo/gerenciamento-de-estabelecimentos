@@ -12,7 +12,9 @@ RUN pip3 install flask \
     flask-mysqldb \
     flask-script \
     faker \
-    wtforms
+    wtforms \
+    flask-cors \
+    wtforms_json
 
 RUN git clone --branch back-end https://github.com/mcarujo/gerenciamento-de-estabelecimentos.git /app
 
@@ -21,3 +23,5 @@ WORKDIR /app/my-apirest
 COPY start.sh .
 
 RUN chmod +x start.sh
+
+EXPOSE 3000

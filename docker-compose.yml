@@ -15,12 +15,14 @@ services:
     build: back-end/.
     restart: always
     ports:
-      - 3001:3000
+      - 81:3000
     depends_on:
       - database
-    command: bash start.sh
-  # front-end:
-  #   build: ./front-end/.
-  #   restart: always
-  #   ports:
-  #     - 5000:3000
+    command: ./start.sh
+
+  front-end:
+    build: ./front-end/.
+    restart: always
+    ports:
+      - 80:3000
+    command: npm start run
