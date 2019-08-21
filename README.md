@@ -8,6 +8,9 @@ Este projeto visa demonstrar um sistema web simples utilizando ReactJS para fron
   docker-compose -d --build
   ```
 
+  Ao executar o mando, você pode acessar o projeto pelo `localhost` na porta padrão 80 do seu navegador.
+  Para visualizar o projeto sendo executado, você pode ver este [video](https://github.com/mcarujo/gerenciamento-de-estabelecimentos/blob/master/video.mov).
+
 ## Back-end
 
 Para visualizar o código clique [aqui](https://github.com/mcarujo/gerenciamento-de-estabelecimentos/tree/back-end/my-apirest).
@@ -37,3 +40,25 @@ Breve descrição e divisão de responsabilidade do back-end:
 - [connectors](https://github.com/mcarujo/gerenciamento-de-estabelecimentos/tree/back-end/my-apirest/connectors) é o diretorio onde está presente as conexões com o banco de dados e suas lógicas de funcionamento.
 - [models](https://github.com/mcarujo/gerenciamento-de-estabelecimentos/tree/back-end/my-apirest/models) é o diretorio onde está presente todos os modelos da APIRest.
 - [validations](https://github.com/mcarujo/gerenciamento-de-estabelecimentos/tree/back-end/my-apirest/validations) é o diretorio onde se encontra a válidação dos dados que vem do request feito pelo usuario.
+
+## Front-end
+
+Para visualizar o código clique [aqui](https://github.com/mcarujo/gerenciamento-de-estabelecimentos/tree/front-end).
+
+O front-end é uma camada de visualização feita com [ReactJS](reactjs.org), onde sua única responsabilidade é visualização de dados e comunicação com uma APIRest (back-end).
+dentro do front-end temos basicamente 4 telas:
+
+- Principal (com rota '/'), é onde nela temos um texto descritivo do projeto sendo apresentado ao usuário.
+- Estabelecimentos (com rota '/table') é a tela onde se encontra uma tabela de Estabelecimentos que é uma visualização dos dados presentes no banco de dados que são retornados pela APIRest.
+- Adicionar (com rota '/form') é um formulário onde se é possível adicionar e editar um estabelecimento.
+- Login (com rota '/login') é um pequeno formulário onde o usuário deve se autenticar para poder utilizar as telas 'Estabelecimentos' e 'Adicionar'.
+
+Breve descrição e divisão de responsabilidade do front-end:
+
+- [App.js](https://github.com/mcarujo/gerenciamento-de-estabelecimentos/blob/front-end/my-app/src/App.js) contem o layout da página web, onde é reaproveitado para criação das telas 'Principal', 'Estabelecimentos' e 'Adicionar'.
+- [index.js](https://github.com/mcarujo/gerenciamento-de-estabelecimentos/blob/front-end/my-app/src/index.js) contém a configuração de rotas e navegações dentro do front-end.
+- [service.js](https://github.com/mcarujo/gerenciamento-de-estabelecimentos/blob/front-end/my-app/src/services/service.js) é responsavel por as requisições HTTP com o back-end e tratar as respostas das mesmas.
+- [screen](https://github.com/mcarujo/gerenciamento-de-estabelecimentos/tree/front-end/my-app/src/screen) Nesse diretório é colocado todas as telas do front-end para serem navegadas pelo usuário.
+- [css](https://github.com/mcarujo/gerenciamento-de-estabelecimentos/tree/front-end/my-app/src/css) este diretório tem os arquivos css da biblioteca [PureCSS](https://purecss.io/) que é importado para o ReactJS deste projeto.
+- [connectors](https://github.com/mcarujo/gerenciamento-de-estabelecimentos/tree/back-end/my-apirest/connectors) é o diretorio onde está presente as conexões com o banco de dados e suas lógicas de funcionamento.
+- [components](https://github.com/mcarujo/gerenciamento-de-estabelecimentos/tree/front-end/my-app/src/components) aqui neste diretório deve ser colocando os componentes minimos para serem importados pelas telas e assim sendo reaproveitado.
